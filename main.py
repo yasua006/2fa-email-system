@@ -1,4 +1,3 @@
-import sys
 import smtplib
 
 from pyotp import TOTP
@@ -6,30 +5,24 @@ from pyotp import random_base32
 from smtplib import SMTP_SSL
 from email.mime.text import MIMEText
 
+from modules.handler import handle_user_result, handle_equal_emails_config
 from config import *
 
 
 def ask(current_totp: str) -> None:
-    result = input(
+    result: str = input(
         f"Please enter the authentication code.\nThe authentication code has been sent to email: {to}\n")
 
-    if result == current_totp:
-        print("Success!")
-        sys.exit(0)
-    else:
-        print("Invalid authentication code!")
-        sys.exit(0)
+    handle_user_result(result, current_totp)
 
 def main() -> None:
+    handle_equal_emails_config()
+
     totp: TOTP = TOTP(random_base32())
     emailed_code: str = totp.now()
 
     msg: MIMEText = MIMEText("Your code is: " + totp.now())
     # print(msg)
-
-    if sender_email == to:
-        print("Receiver can't be sender!")
-        sys.exit(0)
 
     msg['Subject'] = "2FA Verification"
     msg['From'] = sender_email
