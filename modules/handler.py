@@ -13,5 +13,6 @@ def handle_user_result(result, current_totp) -> None:
 
 def handle_equal_emails_config():
     if sender_email == to:
+        #print(sender_email, to)
         print("Receiver can't be sender!")
         sys.exit(0)
